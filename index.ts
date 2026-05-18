@@ -86,10 +86,21 @@ bot.launch().then(() => console.log("Telegram Bot is running...")).catch(err => 
   console.error("Failed to start bot, please check your BOT_TOKEN:", err.message);
 });
 
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 // Web Server for API
 const server = Bun.serve({
   port: process.env.PORT || 3000,
   async fetch(req) {
+    if (req.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders, status: 204 });
+    }
+
     const url = new URL(req.url);
     if (req.method === "POST" && url.pathname === "/upload") {
       try {
@@ -134,7 +145,7 @@ const server = Bun.serve({
         `, [cleanUsername, objectName]);
 
         return new Response(JSON.stringify({ success: true, message: "Photo uploaded successfully" }), {
-          headers: { "Content-Type": "application/json" },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       } catch (err) {
         console.error("Upload error:", err);
