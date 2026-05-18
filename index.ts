@@ -12,7 +12,7 @@ const MINIO_BUCKET = process.env.MINIO_BUCKET || "bot-photos";
 const SQLITE_FILE = process.env.SQLITE_FILE || "bot.db";
 
 // Initialize SQLite DB
-const db = new Database(SQLITE_FILE, { create: true });
+const db = new Database(`./db/${SQLITE_FILE}`, { create: true });
 db.run(`
   CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,

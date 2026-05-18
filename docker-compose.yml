@@ -11,3 +11,15 @@ services:
     volumes:
       - ./minio/data:/data
     command: server /data --console-address ":9001"
+
+  bot:
+    build: .
+    container_name: bot
+    ports:
+      - "$PORT:$PORT"
+    env_file:
+      - .env
+    volumes:
+      - ./db:/usr/src/app/db
+    depends_on:
+      - minio
