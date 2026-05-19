@@ -96,6 +96,7 @@ const corsHeaders = {
 // Web Server for API
 const server = Bun.serve({
   port: process.env.PORT || 3000,
+  hostname: "0.0.0.0",
   async fetch(req) {
     if (req.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders, status: 204 });
